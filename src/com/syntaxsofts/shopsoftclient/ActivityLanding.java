@@ -1,13 +1,10 @@
 package com.syntaxsofts.shopsoftclient;
 
-import java.util.concurrent.ExecutionException;
-
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.Intent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

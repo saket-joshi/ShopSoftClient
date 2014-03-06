@@ -1,5 +1,7 @@
 package com.syntaxsofts.shopsoftclient;
 
+import java.util.concurrent.ExecutionException;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -9,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,12 +59,23 @@ public class ActivityCategories extends Activity implements TabListener{
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		
-		drawSubcategoryListActivity
-		
+		try 
+		{
+			drawSubcategoryListActivity(new getSubCategories().execute(tab.getText().toString()).get());
+		}
+		catch(Exception ex)
+		{
+			Log.d("getsubcat", ex.toString());
+		}
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		
+	}
+	
+	void drawSubcategoryListActivity(String[] subCatArray)
+	{
 		
 	}
 	
