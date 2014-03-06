@@ -21,7 +21,9 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
+        public static final int focused=0x7f020002;
         public static final int ic_launcher=0x7f020000;
+        public static final int selected=0x7f020003;
         public static final int untitled=0x7f020001;
     }
     public static final class id {
@@ -35,6 +37,7 @@ public final class R {
         public static final int activity_categories=0x7f030000;
         public static final int activity_landing=0x7f030001;
         public static final int list_item=0x7f030002;
+        public static final int list_subcategories_layout=0x7f030003;
     }
     public static final class menu {
         public static final int activity_landing=0x7f070000;

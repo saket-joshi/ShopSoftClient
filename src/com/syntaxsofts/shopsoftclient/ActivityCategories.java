@@ -1,18 +1,21 @@
 package com.syntaxsofts.shopsoftclient;
 
-import java.util.concurrent.ExecutionException;
-
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -21,7 +24,8 @@ public class ActivityCategories extends Activity implements TabListener{
 	String[] categoryArray = null;
 	ActionBar mActionBar;
 	String shopName;
-	
+	ListView mListView;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +36,8 @@ public class ActivityCategories extends Activity implements TabListener{
 			categoryArray = getIntent().getStringArrayExtra("shopCategoryArray");
 			shopName = getIntent().getStringExtra("shopName");
 		}
+		
+		mListView = (ListView)findViewById(R.id.listView1);
 		
 		mActionBar = getActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -76,7 +82,17 @@ public class ActivityCategories extends Activity implements TabListener{
 	
 	void drawSubcategoryListActivity(String[] subCatArray)
 	{
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_subcategories_layout, subCatArray);
+		mListView.setAdapter(adapter);
 		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				Toast.makeText(getApplicationContext(), adapter.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+			}
+		
+		});
 	}
 	
 }
