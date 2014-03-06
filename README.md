@@ -1,7 +1,7 @@
-CloudMessenger
+ShopSoftClient
 ==============
 
-Cloud Messenger
+ShopSoft Client App
 
 cd Source Dir
 
@@ -11,6 +11,6 @@ git add .
 
 git commit -m "<commit message>"
 
-git remote add cloudmsgr https://github.com/saketsjo/CloudMessenger.git
+git remote add shopsoftcli https://github.com/saketsjo/ShopSoftClient.git
 
-git push cloudmsgr master
+git push shopsoftcli master
