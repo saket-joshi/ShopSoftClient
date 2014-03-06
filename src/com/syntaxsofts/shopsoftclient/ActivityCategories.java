@@ -13,9 +13,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
@@ -100,6 +102,9 @@ public class ActivityCategories extends Activity implements TabListener{
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		
+		Vibrator mVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+		mVibrator.vibrate(100);
+		
 		if(v.getId() == R.id.lstSubCat)
 		{
 			ListView lv = (ListView)v;
@@ -120,5 +125,11 @@ public class ActivityCategories extends Activity implements TabListener{
 				
 			}
 		}
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+		return super.onContextItemSelected(item);
 	}
 }
