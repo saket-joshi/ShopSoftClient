@@ -27,17 +27,20 @@ public final class R {
         public static final int untitled=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f080004;
+        public static final int action_settings=0x7f080006;
+        public static final int btnOKDialogProds=0x7f080005;
         public static final int drawer_layout=0x7f080001;
         public static final int frame=0x7f080002;
-        public static final int listView1=0x7f080000;
         public static final int lstMain=0x7f080003;
+        public static final int lstProductsDialog=0x7f080004;
+        public static final int lstSubCat=0x7f080000;
     }
     public static final class layout {
         public static final int activity_categories=0x7f030000;
         public static final int activity_landing=0x7f030001;
         public static final int list_item=0x7f030002;
         public static final int list_subcategories_layout=0x7f030003;
+        public static final int product_list_layout=0x7f030004;
     }
     public static final class menu {
         public static final int activity_landing=0x7f070000;

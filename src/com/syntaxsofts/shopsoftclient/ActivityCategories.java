@@ -1,30 +1,40 @@
 package com.syntaxsofts.shopsoftclient;
 
+import java.util.concurrent.ExecutionException;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActivityCategories extends Activity implements TabListener{
 
 	String[] categoryArray = null;
 	ActionBar mActionBar;
 	String shopName;
 	ListView mListView;
+	String[] mStrings;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,7 @@ public class ActivityCategories extends Activity implements TabListener{
 			shopName = getIntent().getStringExtra("shopName");
 		}
 		
-		mListView = (ListView)findViewById(R.id.listView1);
+		mListView = (ListView)findViewById(R.id.lstSubCat);
 		
 		mActionBar = getActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -64,7 +74,6 @@ public class ActivityCategories extends Activity implements TabListener{
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		
 		try 
 		{
 			drawSubcategoryListActivity(new getSubCategories().execute(tab.getText().toString()).get());
@@ -80,19 +89,36 @@ public class ActivityCategories extends Activity implements TabListener{
 		
 	}
 	
-	void drawSubcategoryListActivity(String[] subCatArray)
+	void drawSubcategoryListActivity(final String[] subCatArray)
 	{
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_subcategories_layout, subCatArray);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(ActivityCategories.this, R.layout.list_subcategories_layout, subCatArray);
 		mListView.setAdapter(adapter);
-		
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), adapter.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-			}
-		
-		});
-	}
+		registerForContextMenu(mListView);		
+	}	
 	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		if(v.getId() == R.id.lstSubCat)
+		{
+			ListView lv = (ListView)v;
+			AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo)menuInfo;
+			String subCat = (String) lv.getItemAtPosition(acmi.position);
+			
+			try
+			{
+				String[] prodNames = new getProductNames().execute(subCat).get();
+				menu.setHeaderTitle(subCat);
+				for(int i=0;i < prodNames.length; i++)
+				{
+					menu.add(prodNames[i]);
+				}
+			}
+			catch(Exception ex)
+			{
+				
+			}
+		}
+	}
 }
