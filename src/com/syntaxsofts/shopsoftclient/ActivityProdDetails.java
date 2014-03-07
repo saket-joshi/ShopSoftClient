@@ -1,12 +1,18 @@
 package com.syntaxsofts.shopsoftclient;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.app.AlertDialog.Builder;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pManager.ActionListener;
@@ -14,8 +20,15 @@ import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebSettings.PluginState;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +48,8 @@ public class ActivityProdDetails extends Activity implements TabListener{
 	
 	WebView mWebView;
 	TextView txtDescription;
+	ImageView mInStock;
+	ImageView mSoldOut;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +70,8 @@ public class ActivityProdDetails extends Activity implements TabListener{
 
 		mWebView = (WebView)findViewById(R.id.prodImgWeb);
 		txtDescription = (TextView)findViewById(R.id.txtDescription);
+		mInStock = (ImageView)findViewById(R.id.imgInStock);
+		mSoldOut = (ImageView)findViewById(R.id.imgSoldOut);
 		
 		ActionBar mActionBar = getActionBar();
 		mActionBar.setTitle(prodName);
@@ -72,6 +89,78 @@ public class ActivityProdDetails extends Activity implements TabListener{
 		mWebView.loadUrl("http://syntaxsofts.com/ShopSoft/images/" + prodDetails[5]);
 		txtDescription.setText("Info: " + prodInfo + "\n\nMRP: " + prodMRP + " ₹"+ "\n\nRate: " + prodRate + "  ₹" + "\n\nWarranty: " + prodWarranty + " years");
 		
+		txtDescription.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				mSoldOut.setAlpha((float)0.4);
+				mInStock.setAlpha((float)0.4);
+				return false;
+			}
+		});
+		
+		if(Integer.parseInt(prodStock) >=1)
+		{
+			mSoldOut.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			mInStock.setVisibility(View.VISIBLE);
+		}
+				
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.menu_view_videos, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		if(item.getItemId() == R.id.viewVideos)
+		{
+			try
+			{
+				AlertDialog.Builder mBuilder = new Builder(ActivityProdDetails.this);
+				mBuilder.setTitle(prodName);
+				
+				WebView mWebView = new WebView(ActivityProdDetails.this);
+			
+				mWebView.getSettings().setJavaScriptEnabled(true);
+				mWebView.getSettings().setPluginState(PluginState.ON);
+				
+				mWebView.loadUrl("http://www.youtube.com/results?search_query=" + URLEncoder.encode(prodName, "UTF-8"));
+				mWebView.setWebViewClient(new WebViewClient() {
+					@Override
+					public boolean shouldOverrideUrlLoading(WebView view, String url) {
+						view.loadUrl(url);
+						return true;
+					}
+				});
+				mBuilder.setView(mWebView);
+				
+				mBuilder.setNegativeButton("Close", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				mBuilder.create().show();
+				
+				return true;
+			}
+			catch (UnsupportedEncodingException e) 
+			{
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

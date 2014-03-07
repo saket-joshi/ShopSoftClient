@@ -29,15 +29,18 @@ public final class R {
         public static final int untitled=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f080008;
-        public static final int btnOKDialogProds=0x7f080007;
+        public static final int action_settings=0x7f08000a;
+        public static final int btnOKDialogProds=0x7f080009;
         public static final int drawer_layout=0x7f080001;
         public static final int frame=0x7f080002;
+        public static final int imgInStock=0x7f080006;
+        public static final int imgSoldOut=0x7f080007;
         public static final int lstMain=0x7f080003;
-        public static final int lstProductsDialog=0x7f080006;
+        public static final int lstProductsDialog=0x7f080008;
         public static final int lstSubCat=0x7f080000;
         public static final int prodImgWeb=0x7f080004;
         public static final int txtDescription=0x7f080005;
+        public static final int viewVideos=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_categories=0x7f030000;
@@ -49,6 +52,7 @@ public final class R {
     }
     public static final class menu {
         public static final int activity_landing=0x7f070000;
+        public static final int menu_view_videos=0x7f070001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;

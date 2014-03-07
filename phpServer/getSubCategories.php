@@ -15,11 +15,12 @@ while($row = mysqli_fetch_array($result2))
 $resultAdmin = $row['DbUser'];
 $resultAddr = $row['DbAddress'];
 $resultPwd = $row['DbPassword'];
+$hostname = $row['hostname'];
 }
 
 mysqli_close($conn2);
 
-$conn = mysqli_connect("mysql9.000webhost.com",$resultAdmin,$resultPwd,$resultAddr);
+$conn = mysqli_connect($hostname,$resultAdmin,$resultPwd,$resultAddr);
 if (mysqli_connect_errno())
 {
 	echo "Failed to connect to mysql";
