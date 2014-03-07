@@ -11,33 +11,35 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class getShopCategories extends AsyncTask<String, String, String[]> {
+public class getProductDetails extends AsyncTask<String, String, String[]> {
 
 	@Override
 	protected String[] doInBackground(String... params) {
-
+		
 		HttpClient mClient = new DefaultHttpClient();
 		ResponseHandler<String> mResponseHandler = new BasicResponseHandler();
 		
 		String mResponse;
-		String[] arrResponse = null;
+		String[] arrResponse;
 		
-		try 
+		try
 		{
 			params[0] = URLEncoder.encode(params[0],"UTF-8");
+			params[1] = URLEncoder.encode(params[1],"UTF-8");
 			
-			String URL = "http://syntaxsofts.com/ShopSoft/getShopCategories.php?shopName=" + params[0];
-			
+			String URL = "http://syntaxsofts.com/ShopSoft/getProductDetails.php?shopName=" + params[0] + "&productName=" + params[1];
 			HttpGet mGet = new HttpGet(URL);
-			mResponse = mClient.execute(mGet,mResponseHandler);
 			
-			arrResponse = mResponse.split("<!")[0].trim().split("%");
+			mResponse = mClient.execute(mGet, mResponseHandler);
+			
+			arrResponse = mResponse.split("<!")[0].trim().replace("_", " ").split("%");
 			
 			return arrResponse;
+			
 		}
 		catch(Exception ex)
 		{
-			Log.d("InternetCheck", ex.toString());
+			Log.d("getproductdetails", ex.toString());
 			return new String[] {"error"};
 		}
 	}

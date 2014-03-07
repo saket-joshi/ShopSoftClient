@@ -1,8 +1,24 @@
 <?php
 
 $subCat = $_GET['subCategory'];
+$shopName = $_GET['shopName'];
 
-$conn = mysqli_connect("mysql9.000webhost.com","a4921234_emadmin","eternity123","a4921234_dbEMall");
+$conn2 = mysqli_connect("mysql9.000webhost.com","a4921234_sserver","shopsoft123","a4921234_server");
+if (mysqli_connect_errno())
+{
+	echo "Failed to connect to mysql";
+}
+ 
+$result2 = mysqli_query($conn2,"SELECT * FROM tblShop WHERE ShopName = '" . $shopName . "'");
+while($row = mysqli_fetch_array($result2))
+{
+	$resultAdmin = $row['DbUser'];
+	$resultAddr = $row['DbAddress'];
+	$resultPwd = $row['DbPassword'];
+	$hostname = $row['hostname'];
+}
+mysqli_close($conn2);
+$conn = mysqli_connect($hostname,$resultAdmin,$resultPwd,$resultAddr);
 if (mysqli_connect_errno())
 {
 	echo "Failed to connect to mysql";

@@ -10,6 +10,7 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class ActivityCategories extends Activity implements TabListener{
 	String shopName;
 	ListView mListView;
 	String[] mStrings;
+	String selectedProduct;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class ActivityCategories extends Activity implements TabListener{
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		try 
 		{
-			drawSubcategoryListActivity(new getSubCategories().execute(tab.getText().toString()).get());
+			drawSubcategoryListActivity(new getSubCategories().execute(new String[] {shopName, tab.getText().toString()}).get());
 		}
 		catch(Exception ex)
 		{
@@ -113,7 +115,7 @@ public class ActivityCategories extends Activity implements TabListener{
 			
 			try
 			{
-				String[] prodNames = new getProductNames().execute(subCat).get();
+				String[] prodNames = new getProductNames().execute(new String[] {shopName, subCat}).get();
 				menu.setHeaderTitle(subCat);
 				for(int i=0;i < prodNames.length; i++)
 				{
@@ -128,8 +130,26 @@ public class ActivityCategories extends Activity implements TabListener{
 	}
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+	public boolean onContextItemSelected(MenuItem item) {		
+		try 
+		{
+			selectedProduct = item.getTitle().toString();
+			getItemDetailsAndStartNewActivity(selectedProduct, 
+					new getProductDetails().execute(new String[] {shopName, selectedProduct}).get());
+		}
+		catch (Exception ex) 
+		{
+			Log.d("getproductdetails", ex.toString());
+		}
+		
 		return super.onContextItemSelected(item);
+	}
+	
+	void getItemDetailsAndStartNewActivity(String prodName, String[] prodDetails)
+	{
+		Intent mIntent = new Intent(ActivityCategories.this,ActivityProdDetails.class);
+		mIntent.putExtra("prodName", prodName);
+		mIntent.putExtra("productDetails", prodDetails);
+		startActivity(mIntent);
 	}
 }

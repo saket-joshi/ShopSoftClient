@@ -1,5 +1,7 @@
 package com.syntaxsofts.shopsoftclient;
 
+import java.net.URLEncoder;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -22,7 +24,10 @@ public class getSubCategories extends AsyncTask<String, String, String[]> {
 		
 		try 
 		{
-			String URL = "http://syntaxsofts.com/ShopSoft/getSubCategories.php?categoryName=" + params[0];
+			params[0] = URLEncoder.encode(params[0],"UTF-8");
+			params[1] = URLEncoder.encode(params[1],"UTF-8");
+			
+			String URL = "http://syntaxsofts.com/ShopSoft/getSubCategories.php?shopName=" + params[0] + "&categoryName=" + params[1];
 			
 			HttpGet mGet = new HttpGet(URL);
 			mResponse = mClient.execute(mGet,mResponseHandler);
