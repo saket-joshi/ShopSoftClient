@@ -51,6 +51,8 @@ public class ActivityProdDetails extends Activity implements TabListener{
 	ImageView mInStock;
 	ImageView mSoldOut;
 	
+	dependencies mDependencies = new dependencies();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,58 +108,82 @@ public class ActivityProdDetails extends Activity implements TabListener{
 		else
 		{
 			mInStock.setVisibility(View.VISIBLE);
-		}
-				
+		}	
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.menu_view_videos, menu);
+		if(Integer.parseInt(prodStock) < 1)
+		{
+			menu.findItem(R.id.buyProduct).setEnabled(false);
+		}
+		else
+		{
+			menu.findItem(R.id.setAlert).setEnabled(false);
+		}
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		if(item.getItemId() == R.id.viewVideos)
+		switch(item.getItemId())
 		{
-			try
+			case R.id.viewVideos:
 			{
-				AlertDialog.Builder mBuilder = new Builder(ActivityProdDetails.this);
-				mBuilder.setTitle(prodName);
-				
-				WebView mWebView = new WebView(ActivityProdDetails.this);
-			
-				mWebView.getSettings().setJavaScriptEnabled(true);
-				mWebView.getSettings().setPluginState(PluginState.ON);
-				
-				mWebView.loadUrl("http://www.youtube.com/results?search_query=" + URLEncoder.encode(prodName, "UTF-8"));
-				mWebView.setWebViewClient(new WebViewClient() {
-					@Override
-					public boolean shouldOverrideUrlLoading(WebView view, String url) {
-						view.loadUrl(url);
-						return true;
-					}
-				});
-				mBuilder.setView(mWebView);
-				
-				mBuilder.setNegativeButton("Close", new OnClickListener() {
+				try
+				{
+					AlertDialog.Builder mBuilder = new Builder(ActivityProdDetails.this);
+					mBuilder.setTitle(prodName);
 					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				mBuilder.create().show();
+					WebView mWebView = new WebView(ActivityProdDetails.this);
 				
-				return true;
+					mWebView.getSettings().setJavaScriptEnabled(true);
+					mWebView.getSettings().setPluginState(PluginState.ON);
+					
+					mWebView.loadUrl("http://www.youtube.com/results?search_query=" + URLEncoder.encode(prodName, "UTF-8"));
+					mWebView.setWebViewClient(new WebViewClient() {
+						@Override
+						public boolean shouldOverrideUrlLoading(WebView view, String url) {
+							view.loadUrl(url);
+							return true;
+						}
+					});
+					mBuilder.setView(mWebView);
+					
+					mBuilder.setNegativeButton("Close", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+					mBuilder.create().show();
+					
+					return true;
+				}
+				catch (UnsupportedEncodingException e) 
+				{
+					e.printStackTrace();
+				}
 			}
-			catch (UnsupportedEncodingException e) 
-			{
-				e.printStackTrace();
-			}
+			break;
 			
+			case R.id.buyProduct:
+				mDependencies.addToCart(prodName);
+				Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.addWishlist:
+				Toast.makeText(getApplicationContext(), "add wishlist code", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.talkToShopkeeper:
+				Toast.makeText(getApplicationContext(), "add talk code", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.setAlert:
+				Toast.makeText(getApplicationContext(), "add alert", Toast.LENGTH_SHORT).show();
+				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -180,9 +206,7 @@ public class ActivityProdDetails extends Activity implements TabListener{
 		{
 			txtDescription.setVisibility(View.INVISIBLE);
 			mWebView.setVisibility(View.VISIBLE);
-		}
-		
-		
+		}		
 	}
 
 	@Override

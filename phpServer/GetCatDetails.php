@@ -2,7 +2,7 @@
 
 $shopName = $_GET['shopName'];
 
-$conn = mysqli_connect("localhost","saketjo_sserver","shopsoft123","saketjo_server");
+$conn = mysqli_connect("mysql9.000webhost.com","a4921234_sserver","shopsoft123","a4921234_server");
 if (mysqli_connect_errno())
 {
 	echo "Failed to connect to mysql";
@@ -30,8 +30,12 @@ while($row2 = mysqli_fetch_array($result2))
 {
 	$resultStr2 = $resultStr2 . $row2['CatName'] . "%";
 }
- 
+$resultStr2=$resultStr2 . "@" ;
+while($row3 = mysqli_fetch_array($result2))
+{
+	$resultStr2= $resultStr2 .  $row3['Photos']."^" ;
+}
 echo $resultStr2;
 mysqli_close($conn2);
 
-?>		
+?>

@@ -3,7 +3,7 @@
 $subCat = $_GET['subCategory'];
 $shopName = $_GET['shopName'];
 
-$conn2 = mysqli_connect("mysql9.000webhost.com","a4921234_sserver","shopsoft123","a4921234_server");
+$conn2 = mysqli_connect("localhost","saketjo_sserver","shopsoft123","saketjo_server");
 if (mysqli_connect_errno())
 {
 	echo "Failed to connect to mysql";
