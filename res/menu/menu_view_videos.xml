@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/viewCart" android:title="View cart"></item>
     <item android:id="@+id/viewVideos" android:title="View Product Videos"></item>
     <item android:id="@+id/buyProduct" android:title="Add to cart"></item>
     <item android:id="@+id/addWishlist" android:title="Add to wishlist"></item>

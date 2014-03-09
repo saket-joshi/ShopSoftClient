@@ -4,21 +4,36 @@ import java.util.LinkedList;
 
 public class dependencies {
 
-	private LinkedList<String>lstCart = new LinkedList<String>();
+	private LinkedList<prodDetails>lstCart = new LinkedList<prodDetails>();
 	
-	public boolean addToCart(String prodName)
+	public boolean addToCart(prodDetails prod)
 	{
-		return lstCart.add(prodName);
+		return lstCart.add(prod);
 	}
 	
-	public boolean removeFromCart(String prodName)
+	public boolean removeFromCart(String prod)
 	{
-		return lstCart.remove(prodName);
+		return lstCart.remove(prod);
 	}
 	
-	public String[] getCart()
+	public boolean isPresentAlready(String prod)
 	{
-		return lstCart.toArray(new String[lstCart.size()]);
+		prodDetails[] mList = getCart();
+		for (int i = 0; i < mList.length; i++) 
+		{
+			{
+				prodDetails mProd = mList[i];
+				if(mProd.prodName == prod)
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public prodDetails[] getCart()
+	{
+		prodDetails[] arr = new prodDetails[lstCart.size()];
+		return lstCart.toArray(arr);
 	}
 	
 }

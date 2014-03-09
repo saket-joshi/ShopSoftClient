@@ -30,9 +30,9 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f08000a;
-        public static final int addWishlist=0x7f08000d;
+        public static final int addWishlist=0x7f08000e;
         public static final int btnOKDialogProds=0x7f080009;
-        public static final int buyProduct=0x7f08000c;
+        public static final int buyProduct=0x7f08000d;
         public static final int drawer_layout=0x7f080001;
         public static final int frame=0x7f080002;
         public static final int imgInStock=0x7f080006;
@@ -41,10 +41,11 @@ public final class R {
         public static final int lstProductsDialog=0x7f080008;
         public static final int lstSubCat=0x7f080000;
         public static final int prodImgWeb=0x7f080004;
-        public static final int setAlert=0x7f08000f;
-        public static final int talkToShopkeeper=0x7f08000e;
+        public static final int setAlert=0x7f080010;
+        public static final int talkToShopkeeper=0x7f08000f;
         public static final int txtDescription=0x7f080005;
-        public static final int viewVideos=0x7f08000b;
+        public static final int viewCart=0x7f08000b;
+        public static final int viewVideos=0x7f08000c;
     }
     public static final class layout {
         public static final int activity_categories=0x7f030000;

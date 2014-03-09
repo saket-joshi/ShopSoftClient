@@ -37,7 +37,7 @@ public class ActivityProdDetails extends Activity implements TabListener{
 
 	String prodName;
 	String prodMRP;
-	String prodRate;
+	int prodRate;
 	String prodInfo;
 	String prodStock;
 	String prodWarranty;
@@ -64,7 +64,7 @@ public class ActivityProdDetails extends Activity implements TabListener{
 			prodDetails = getIntent().getStringArrayExtra("productDetails");
 			
 			prodMRP = prodDetails[0];
-			prodRate = prodDetails[1];
+			prodRate = Integer.parseInt(prodDetails[1]);
 			prodInfo = prodDetails[2];
 			prodStock = prodDetails[3];
 			prodWarranty = prodDetails[4];			
@@ -172,8 +172,15 @@ public class ActivityProdDetails extends Activity implements TabListener{
 			break;
 			
 			case R.id.buyProduct:
-				mDependencies.addToCart(prodName);
-				Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT).show();
+				
+				if(!mDependencies.isPresentAlready(prodName))
+				{
+					prodDetails mProd = new prodDetails(prodName, 2, prodRate);
+					mDependencies.addToCart(mProd);
+					Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT).show();
+				}
+				else
+					Toast.makeText(getApplicationContext(), "Item already present", Toast.LENGTH_SHORT).show();				
 				break;
 			case R.id.addWishlist:
 				Toast.makeText(getApplicationContext(), "add wishlist code", Toast.LENGTH_SHORT).show();
