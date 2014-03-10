@@ -2,24 +2,18 @@ package com.syntaxsofts.shopsoftclient;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.concurrent.ExecutionException;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.wifi.p2p.WifiP2pManager.ActionListener;
-import android.opengl.Visibility;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +22,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.WebSettings.PluginState;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +45,10 @@ public class ActivityProdDetails extends Activity implements TabListener{
 	TextView txtDescription;
 	ImageView mInStock;
 	ImageView mSoldOut;
+
+	private int prodQty;
+	
+	Button btnViewCart;
 	
 	dependencies mDependencies = new dependencies();
 	
@@ -74,6 +73,7 @@ public class ActivityProdDetails extends Activity implements TabListener{
 		txtDescription = (TextView)findViewById(R.id.txtDescription);
 		mInStock = (ImageView)findViewById(R.id.imgInStock);
 		mSoldOut = (ImageView)findViewById(R.id.imgSoldOut);
+		btnViewCart = (Button)findViewById(R.id.btnViewCart);
 		
 		ActionBar mActionBar = getActionBar();
 		mActionBar.setTitle(prodName);
@@ -109,6 +109,15 @@ public class ActivityProdDetails extends Activity implements TabListener{
 		{
 			mInStock.setVisibility(View.VISIBLE);
 		}	
+		
+		btnViewCart.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent mIntent = new Intent(ActivityProdDetails.this, ActivityCart.class);
+				startActivity(mIntent);
+			}
+		});
 	}
 	
 	@Override
@@ -141,7 +150,6 @@ public class ActivityProdDetails extends Activity implements TabListener{
 					WebView mWebView = new WebView(ActivityProdDetails.this);
 				
 					mWebView.getSettings().setJavaScriptEnabled(true);
-					mWebView.getSettings().setPluginState(PluginState.ON);
 					
 					mWebView.loadUrl("http://www.youtube.com/results?search_query=" + URLEncoder.encode(prodName, "UTF-8"));
 					mWebView.setWebViewClient(new WebViewClient() {
@@ -175,7 +183,23 @@ public class ActivityProdDetails extends Activity implements TabListener{
 				
 				if(!mDependencies.isPresentAlready(prodName))
 				{
-					prodDetails mProd = new prodDetails(prodName, 2, prodRate);
+					Dialog mDialog = new Dialog(ActivityProdDetails.this);
+					mDialog.setContentView(R.layout.inputbox);
+					mDialog.setTitle("Enter the quantity");
+					mDialog.setCancelable(false);
+					mDialog.show();
+					
+					final EditText mInput = (EditText)findViewById(R.id.txtInputBox);
+					Button mButton = (Button)findViewById(R.id.btnInputBox);
+					mButton.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							prodQty = Integer.parseInt(mInput.getText().toString());
+						}
+					});
+					
+					prodDetails mProd = new prodDetails(prodName, prodQty, prodRate);
 					mDependencies.addToCart(mProd);
 					Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT).show();
 				}

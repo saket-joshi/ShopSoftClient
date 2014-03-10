@@ -7,11 +7,11 @@
     <WebView
         android:id="@+id/prodImgWeb"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnViewCart"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:layout_height="match_parent" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/txtDescription"
@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/prodImgWeb"
         android:layout_alignLeft="@+id/prodImgWeb"
-        android:src="@drawable/instock" />
+        android:src="@drawable/instock"
+        android:contentDescription="Product is in stock" />
 
     <ImageView
         android:id="@+id/imgSoldOut"
@@ -39,6 +40,15 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/prodImgWeb"
         android:layout_alignRight="@+id/prodImgWeb"
-        android:src="@drawable/soldout" />
+        android:src="@drawable/soldout"
+        android:contentDescription="Product is out of stock" />
+
+    <Button
+        android:id="@+id/btnViewCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="View cart" />
 
 </RelativeLayout>

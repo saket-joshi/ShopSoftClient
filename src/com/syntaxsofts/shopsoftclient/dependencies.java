@@ -2,8 +2,13 @@ package com.syntaxsofts.shopsoftclient;
 
 import java.util.LinkedList;
 
-public class dependencies {
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 
+public class dependencies {
+	
+	private String PREFS = "ShopSoftCli_Prefs";
 	private LinkedList<prodDetails>lstCart = new LinkedList<prodDetails>();
 	
 	public boolean addToCart(prodDetails prod)
@@ -34,6 +39,12 @@ public class dependencies {
 	{
 		prodDetails[] arr = new prodDetails[lstCart.size()];
 		return lstCart.toArray(arr);
+	}
+	
+	public int getCustomerID(Context mContext)
+	{
+		SharedPreferences mPreferences = mContext.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+		return mPreferences.getInt("customerID", -1);
 	}
 	
 }
