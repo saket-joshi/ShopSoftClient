@@ -27,7 +27,7 @@ public class getProductDetails extends AsyncTask<String, String, String[]> {
 			params[0] = URLEncoder.encode(params[0],"UTF-8");
 			params[1] = URLEncoder.encode(params[1],"UTF-8");
 			
-			String URL = "http://syntaxsofts.com/ShopSoft/getProductDetails.php?shopName=" + params[0] + "&productName=" + params[1];
+			String URL = "http://shopsoft.syntaxsofts.com/getProductDetails.php?shopName=" + params[0] + "&productName=" + params[1];
 			HttpGet mGet = new HttpGet(URL);
 			
 			mResponse = mClient.execute(mGet, mResponseHandler);

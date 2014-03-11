@@ -20,7 +20,6 @@ public class prodDetails {
 	}
 	
 	public prodDetails() {
-		// TODO Auto-generated constructor stub
 	}
 	
 }

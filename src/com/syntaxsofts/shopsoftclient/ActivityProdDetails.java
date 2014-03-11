@@ -88,10 +88,20 @@ public class ActivityProdDetails extends Activity implements TabListener{
 			mActionBar.addTab(mTab);
 		}
 		
-		mWebView.loadUrl("http://syntaxsofts.com/ShopSoft/images/" + prodDetails[5]);
+		mWebView.loadUrl("http://shopsoft.syntaxsofts.com/images/" + prodDetails[5]);
 		txtDescription.setText("Info: " + prodInfo + "\n\nMRP: " + prodMRP + " ₹"+ "\n\nRate: " + prodRate + "  ₹" + "\n\nWarranty: " + prodWarranty + " years");
 		
 		txtDescription.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				mSoldOut.setAlpha((float)0.4);
+				mInStock.setAlpha((float)0.4);
+				return false;
+			}
+		});
+		
+		mWebView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {

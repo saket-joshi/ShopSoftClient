@@ -26,9 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name="ActivityCategories"></activity>
-        <activity android:name="ActivityProdDetails" 
-            android:theme="@android:style/Theme.Dialog" >
-        </activity>
+        <activity android:name="ActivityProdDetails"></activity>
         <activity android:name="ActivityCart" 
             android:theme="@android:style/Theme.Dialog">
         </activity>

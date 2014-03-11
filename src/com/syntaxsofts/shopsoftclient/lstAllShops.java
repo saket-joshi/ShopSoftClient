@@ -20,7 +20,7 @@ public class lstAllShops extends AsyncTask<String, String, String> {
 		
 		try 
 		{
-			String URL = "http://syntaxsofts.com/ShopSoft/lstAllShops.php";
+			String URL = "http://shopsoft.syntaxsofts.com/lstAllShops.php";
 			
 			HttpGet mGet = new HttpGet(URL);
 			mResponse = mClient.execute(mGet,mResponseHandler);

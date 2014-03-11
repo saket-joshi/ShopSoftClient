@@ -1,6 +1,6 @@
 <?php
 
-$conn = mysqli_connect("localhost","saketjo_sserver","shopsoft123","saketjo_server");
+$conn = mysqli_connect("localhost","syntaxso_sserver","shopsoft123","syntaxso_server");
 if (mysqli_connect_errno())
 {
 	echo "Failed to connect to mysql";

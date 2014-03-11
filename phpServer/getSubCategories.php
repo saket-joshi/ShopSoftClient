@@ -3,7 +3,7 @@
 $categoryName = $_GET['categoryName'];
 $shopName = $_GET['shopName'];
 
-$conn2 = mysqli_connect("localhost","saketjo_sserver","shopsoft123","saketjo_server");
+	$conn2 = mysqli_connect("localhost","syntaxso_sserver","shopsoft123","syntaxso_server");
 if(mysqli_connect_errno())
 {
 echo "Failed to connect to the server";
