@@ -37,7 +37,7 @@
 		$addtobill = mysqli_query($conn,"INSERT INTO tblBill(CustomerID,DateofBill,Total) VALUES (" . $custID . ",'" . date("d-m-Y") . "',0)");
 		$currBillNo = mysqli_query($conn,"SELECT MAX(BillID) as maxID FROM tblBill");
 		$nRow = mysqli_fetch_array($currBillNo);
-		$billNo = $nRow['maxID'] + 1;
+		$billNo = $nRow['maxID'];
 
 		for($i=0;$i<sizeof($arrName) - 1;$i++)
 		{

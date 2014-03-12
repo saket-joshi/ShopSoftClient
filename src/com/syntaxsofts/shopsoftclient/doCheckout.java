@@ -71,17 +71,17 @@ public class doCheckout extends AsyncTask<prodDetails, String, Boolean> {
 
 		try
 		{
-			String URL = "http://shopsoft.syntaxsofts.com/checkout.php?ShopName=" + shopName + "&customerID=" + cusID 
+			String URL = "http://shopsoft.syntaxsofts.com/checkout.php?shopName=" + shopName + "&customerID=" + cusID 
 					+ "&billTotal=" + total + "&prodArr=" + prodArray + "&prodQty=" + prodQty;
 			
-			Log.i("checkout",URL);
-			
-			/*HttpGet mGet = new HttpGet(URL);
+			HttpGet mGet = new HttpGet(URL);
 			
 			mResponse = mClient.execute(mGet, mResponseHandler);
 			
+			Log.i("checkout",mResponse);
+			
 			if(mResponse.toString().split("<!")[0].replace("_", " ").trim().toString() == "1")
-				return true;*/
+				return true;
 			return false;
 		}
 		catch(Exception ex)
