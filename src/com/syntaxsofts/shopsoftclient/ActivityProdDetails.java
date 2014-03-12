@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +32,8 @@ import android.widget.Toast;
 
 public class ActivityProdDetails extends Activity implements TabListener{
 
+	String shopName;
+	
 	String prodName;
 	String prodMRP;
 	int prodRate;
@@ -50,12 +54,14 @@ public class ActivityProdDetails extends Activity implements TabListener{
 	
 	Button btnViewCart;
 	
-	dependencies mDependencies = new dependencies();
+	dependencies mDependencies;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_details);
+		
+		mDependencies = ((dependencies)this.getApplicationContext());
 		
 		if(getIntent().hasExtra("prodName") && getIntent().hasExtra("productDetails"))
 		{
@@ -67,8 +73,12 @@ public class ActivityProdDetails extends Activity implements TabListener{
 			prodInfo = prodDetails[2];
 			prodStock = prodDetails[3];
 			prodWarranty = prodDetails[4];			
+			
+			shopName = mDependencies.getSelectedShop();
 		}
 
+		
+		
 		mWebView = (WebView)findViewById(R.id.prodImgWeb);
 		txtDescription = (TextView)findViewById(R.id.txtDescription);
 		mInStock = (ImageView)findViewById(R.id.imgInStock);
@@ -193,25 +203,35 @@ public class ActivityProdDetails extends Activity implements TabListener{
 				
 				if(!mDependencies.isPresentAlready(prodName))
 				{
-					Dialog mDialog = new Dialog(ActivityProdDetails.this);
-					mDialog.setContentView(R.layout.inputbox);
-					mDialog.setTitle("Enter the quantity");
-					mDialog.setCancelable(false);
-					mDialog.show();
+					AlertDialog.Builder  mDialog = new Builder(ActivityProdDetails.this);
+					mDialog.setTitle("Enter quantity");
 					
-					final EditText mInput = (EditText)findViewById(R.id.txtInputBox);
-					Button mButton = (Button)findViewById(R.id.btnInputBox);
-					mButton.setOnClickListener(new View.OnClickListener() {
+					final EditText txtInput = new EditText(this);
+					txtInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+					mDialog.setView(txtInput);
+					
+					mDialog.setPositiveButton("OK", new OnClickListener() {
 						
 						@Override
-						public void onClick(View v) {
-							prodQty = Integer.parseInt(mInput.getText().toString());
+						public void onClick(DialogInterface dialog, int which) {
+							prodQty = Integer.parseInt(txtInput.getText().toString());
+
+							prodDetails mProd = new prodDetails(prodName, prodQty, prodRate);
+							mDependencies.addToCart(mProd);
+							Toast.makeText(getApplicationContext(), "Item added to cart, total items: " +
+									String.valueOf(mDependencies.getCart().length), Toast.LENGTH_SHORT).show();
 						}
 					});
 					
-					prodDetails mProd = new prodDetails(prodName, prodQty, prodRate);
-					mDependencies.addToCart(mProd);
-					Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT).show();
+					mDialog.setNegativeButton("Cancel", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Toast.makeText(getApplicationContext(), "Item not added to cart", Toast.LENGTH_SHORT).show();
+						}
+					});
+					
+					mDialog.show();
 				}
 				else
 					Toast.makeText(getApplicationContext(), "Item already present", Toast.LENGTH_SHORT).show();				

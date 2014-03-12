@@ -40,15 +40,19 @@ public class ActivityCategories extends Activity implements TabListener{
 	String[] mStrings;
 	String selectedProduct;
 		
+	dependencies mDependencies;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_categories);
+	
+		mDependencies =(dependencies)getApplicationContext();
 		
-		if(getIntent().hasExtra("shopCategoryArray") && getIntent().hasExtra("shopName"))
+		if(getIntent().hasExtra("shopCategoryArray"))
 		{
 			categoryArray = getIntent().getStringArrayExtra("shopCategoryArray");
-			shopName = getIntent().getStringExtra("shopName");
+			shopName = mDependencies.getSelectedShop();
 		}
 		
 		mListView = (ListView)findViewById(R.id.lstSubCat);

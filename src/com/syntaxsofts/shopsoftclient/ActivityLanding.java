@@ -3,6 +3,7 @@ package com.syntaxsofts.shopsoftclient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +30,8 @@ public class ActivityLanding extends Activity {
 	AsyncTask<String, String, String> mInternetCheck;
 	String selectedShop;
 	
+	dependencies mDependencies;
+	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +41,9 @@ public class ActivityLanding extends Activity {
 		
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		mListView = (ListView)findViewById(R.id.lstMain);
-				
+		
+		mDependencies = (dependencies)getApplicationContext();
+		
 		try 
 		{
 			strResponse = mInternetCheck.get();
@@ -63,6 +68,7 @@ public class ActivityLanding extends Activity {
 					try 
 					{
 						selectedShop = lstShops[position];
+						mDependencies.setSelectedShop(selectedShop);
 						openShopDetailsFromDrawer(new getShopCategories().execute(selectedShop).get());
 					}
 					catch(Exception ex)
@@ -96,7 +102,6 @@ public class ActivityLanding extends Activity {
 	{
 		Intent mIntent = new Intent(ActivityLanding.this, ActivityCategories.class);
 		mIntent.putExtra("shopCategoryArray", shopCategories);
-		mIntent.putExtra("shopName", selectedShop);
 		startActivity(mIntent);
 	}
 	

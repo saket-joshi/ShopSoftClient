@@ -15,7 +15,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true" >
+        android:hardwareAccelerated="true"
+        android:name=".dependencies" >
         <activity
             android:name="com.syntaxsofts.shopsoftclient.ActivityLanding"
             android:label="@string/app_name" >
@@ -28,8 +29,7 @@
         <activity android:name="ActivityCategories"></activity>
         <activity android:name="ActivityProdDetails"></activity>
         <activity android:name="ActivityCart" 
-            android:theme="@android:style/Theme.Dialog">
-        </activity>
+            android:theme="@android:style/Theme.Dialog" ></activity>
     </application>
-
-</manifest>
+    
+ </manifest>
