@@ -9,6 +9,8 @@
         android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -30,6 +32,10 @@
         <activity android:name="ActivityProdDetails"></activity>
         <activity android:name="ActivityCart" 
             android:theme="@android:style/Theme.Dialog" ></activity>
+        <activity android:name="ActivityBillDetails"></activity>
+        <activity android:name="ActivityBill"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
     </application>
     
  </manifest>

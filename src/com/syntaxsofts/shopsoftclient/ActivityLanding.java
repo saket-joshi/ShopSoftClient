@@ -3,7 +3,6 @@ package com.syntaxsofts.shopsoftclient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -47,6 +46,7 @@ public class ActivityLanding extends Activity {
 		try 
 		{
 			strResponse = mInternetCheck.get();
+			strResponse = strResponse + "View Bills%";
 			final String[] lstShops = strResponse.split("%");
 			
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -67,9 +67,16 @@ public class ActivityLanding extends Activity {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {	
 					try 
 					{
-						selectedShop = lstShops[position];
-						mDependencies.setSelectedShop(selectedShop);
-						openShopDetailsFromDrawer(new getShopCategories().execute(selectedShop).get());
+						if(position == lstShops.length - 1)
+						{
+							openBillDetails();
+						}
+						else
+						{
+							selectedShop = lstShops[position];
+							mDependencies.setSelectedShop(selectedShop);
+							openShopDetailsFromDrawer(new getShopCategories().execute(selectedShop).get());
+						}
 					}
 					catch(Exception ex)
 					{
@@ -102,6 +109,12 @@ public class ActivityLanding extends Activity {
 	{
 		Intent mIntent = new Intent(ActivityLanding.this, ActivityCategories.class);
 		mIntent.putExtra("shopCategoryArray", shopCategories);
+		startActivity(mIntent);
+	}
+	
+	void openBillDetails()
+	{
+		Intent mIntent = new Intent(ActivityLanding.this, ActivityBillDetails.class);
 		startActivity(mIntent);
 	}
 	

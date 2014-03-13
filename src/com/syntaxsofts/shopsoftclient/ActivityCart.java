@@ -1,19 +1,19 @@
 package com.syntaxsofts.shopsoftclient;
 
-import java.util.concurrent.ExecutionException;
-
+import java.io.File;
+import java.io.FileWriter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -30,7 +30,10 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 
 	Button btnCheckout;
 	
+	Context mContext;
+	
 	TableLayout mLinear;
+	String billNo = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 		btnCheckout = (Button)findViewById(R.id.btnCheckout);
 		mLayout = (RelativeLayout)findViewById(R.id.layoutCart);
 		mDependencies = ((dependencies)this.getApplicationContext());
+		mContext = this;
 	
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
@@ -119,19 +123,41 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 			
 			@Override
 			public void onClick(View v) {
-				try
+				if(cartProds.length >= 1)
 				{
-					new doCheckout(ActivityCart.this).execute(cartProds).get();
-					//clear the cart and show the bill
+					try
+					{
+						billNo = new doCheckout(ActivityCart.this).execute(cartProds).get();
+						if(billNo!="null")
+						{
+							createBill(cartProds);
+							clearTheCart(cartProds.length);
+							finish();
+						}
+						else
+						{
+							Toast.makeText(getApplicationContext(), "Cannot checkout at this time, please try again later",Toast.LENGTH_SHORT).show();
+						}
+					}
+					catch (Exception ex)
+					{
+						Log.d("dochekout", ex.toString());
+					}
 				}
-				catch (Exception ex)
+				else
 				{
-					Log.d("dochekout", ex.toString());
+					Toast.makeText(getApplicationContext(), "Your cart is empty",Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
 	}
 
+	private void clearTheCart(int length)
+	{
+		mLinear.removeViews(1, length);
+		mDependencies.emptyCart();
+	}
+	
 	@Override
 	public void onClick(final View v) {
 		
@@ -158,5 +184,68 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 			})
 			.setCancelable(false);
 		mBuilder.create().show();
+	}
+	
+	public void createBill(prodDetails[] cart)
+	{
+		String billDetails = getBillString(cart);
+		
+		String billHeader = "\t\t\t\tShopSoft - " + mDependencies.getSelectedShop() + "\n\n" + "Product \t\t Quantity \t\t Rate \n" +
+				"=====================================\n\n";
+				
+		if(isExternalStorageWritable())
+		{
+			try
+			{
+				File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Bills");
+				if(!root.exists())
+				{
+					root.mkdirs();
+				}
+				
+				File opFile = new File(root, "ShopSoftCli-" + billNo + ".txt");
+				FileWriter mWriter = new FileWriter(opFile);
+				mWriter.write(billHeader);
+				mWriter.append(billDetails);
+				mWriter.flush();
+				mWriter.close();
+				
+				Toast.makeText(getApplicationContext(), "Bill saved as " + opFile.getName() + " in Downloads", Toast.LENGTH_LONG).show();
+			}
+			catch(Exception ex)
+			{
+				Log.d("createbill", ex.toString());
+				Toast.makeText(getApplicationContext(), "Cannot create the bill", Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+	
+	public String getBillString(prodDetails[] cart)
+	{
+		String retStr = "";
+		int total = 0;
+		String prodNameBill;
+		
+		for (int i = 0; i < cart.length; i++) {
+			prodDetails nProd = cart[i];
+			prodNameBill = nProd.prodName;
+			
+			if(prodNameBill.length() > 30)
+				prodNameBill = prodNameBill.substring(0, 30);
+			
+			retStr = retStr + prodNameBill + "\t\t" + String.valueOf(nProd.prodQty) + "\t\t" + String.valueOf(nProd.prodPrice) + "\n";
+			total = total + (nProd.prodPrice * nProd.prodQty);
+		}
+		
+		retStr = retStr + "\n\n\n---------------------------------------\n\n\t\t\t\t\t\tTotal = " + String.valueOf(total);
+		return retStr;
+	}
+	
+	public boolean isExternalStorageWritable() {
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state)) {
+	        return true;
+	    }
+	    return false;
 	}
 }

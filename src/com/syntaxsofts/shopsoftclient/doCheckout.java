@@ -12,7 +12,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class doCheckout extends AsyncTask<prodDetails, String, Boolean> {
+public class doCheckout extends AsyncTask<prodDetails, String, String> {
 
 	dependencies mDependencies;
 	
@@ -23,7 +23,7 @@ public class doCheckout extends AsyncTask<prodDetails, String, Boolean> {
 	}
 	
 	@Override
-	protected Boolean doInBackground(prodDetails... params) {
+	protected String doInBackground(prodDetails... params) {
 		
 		HttpClient mClient = new DefaultHttpClient();
 		ResponseHandler<String> mResponseHandler = new BasicResponseHandler();
@@ -78,16 +78,12 @@ public class doCheckout extends AsyncTask<prodDetails, String, Boolean> {
 			
 			mResponse = mClient.execute(mGet, mResponseHandler);
 			
-			Log.i("checkout",mResponse);
-			
-			if(mResponse.toString().split("<!")[0].replace("_", " ").trim().toString() == "1")
-				return true;
-			return false;
+			return mResponse.toString().split("<!")[0].replace("_", " ").trim().toString();
 		}
 		catch(Exception ex)
 		{
 			Log.d("docheckout.pph", ex.toString());
-			return false;
+			return "null";
 		}
 	}
 

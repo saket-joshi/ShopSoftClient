@@ -1,5 +1,6 @@
 package com.syntaxsofts.shopsoftclient;
 
+import java.io.File;
 import java.util.LinkedList;
 
 import android.app.Activity;
@@ -9,10 +10,20 @@ import android.content.SharedPreferences;
 
 public class dependencies extends Application{
 	
-	
+	private File billFile = null;
 	private String selectedShop = "";
 	private String PREFS = "ShopSoftCli_Prefs";
 	private LinkedList<prodDetails>lstCart = new LinkedList<prodDetails>();
+	
+	public void setBillFile(File nFile)
+	{
+		this.billFile = nFile;
+	}
+	
+	public File getBillFile()
+	{
+		return this.billFile;
+	}
 	
 	public void setSelectedShop(String shopName)
 	{
@@ -60,6 +71,9 @@ public class dependencies extends Application{
 		return mPreferences.getInt("customerID", -1);
 	}
 	
-	
+	public void emptyCart()
+	{
+		lstCart.clear();
+	}
 	
 }
