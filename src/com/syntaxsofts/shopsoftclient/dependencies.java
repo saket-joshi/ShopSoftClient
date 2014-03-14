@@ -2,7 +2,6 @@ package com.syntaxsofts.shopsoftclient;
 
 import java.io.File;
 import java.util.LinkedList;
-
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -69,6 +68,26 @@ public class dependencies extends Application{
 	{
 		SharedPreferences mPreferences = mContext.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
 		return mPreferences.getInt("customerID", -1);
+	}
+	
+	public void registerNewCustomer(Context mContext, String id, String name, String addr, String phone, String pass)
+	{
+		SharedPreferences mPreferences = mContext.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+		SharedPreferences.Editor mEditor = mPreferences.edit();
+		
+		mEditor.putInt("customerID", Integer.parseInt(id));
+		mEditor.putString("customerName", name);
+		mEditor.putString("customerAddress", addr);
+		mEditor.putString("customerPhone", phone);
+		mEditor.putString("customerPwd", pass);
+		
+		mEditor.apply();
+	}
+	
+	public String getPassword(Context mContext)
+	{
+		SharedPreferences mPreferences = mContext.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+		return mPreferences.getString("customerPwd","null");
 	}
 	
 	public void emptyCart()

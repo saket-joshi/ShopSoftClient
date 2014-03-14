@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -42,6 +46,11 @@ public class ActivityLanding extends Activity {
 		mListView = (ListView)findViewById(R.id.lstMain);
 		
 		mDependencies = (dependencies)getApplicationContext();
+		
+		if(mDependencies.getCustomerID(ActivityLanding.this) == -1)
+		{
+			registerNewCustomer();
+		}
 		
 		try 
 		{
@@ -118,4 +127,63 @@ public class ActivityLanding extends Activity {
 		startActivity(mIntent);
 	}
 	
+	
+	void registerNewCustomer()
+	{
+		
+		final EditText txtName, txtPass, txtAddr, txtPhone;
+		Button btnOK;
+		
+		Dialog mDialog = new Dialog(ActivityLanding.this);
+		mDialog.setContentView(R.layout.dialog_new_customer);
+		
+		txtName = (EditText)mDialog.findViewById(R.id.txtName);
+		txtPass = (EditText)mDialog.findViewById(R.id.txtPassword);
+		txtAddr = (EditText)mDialog.findViewById(R.id.txtAddress);
+		txtPhone = (EditText)mDialog.findViewById(R.id.txtPhone);
+		btnOK = (Button)mDialog.findViewById(R.id.btnSaveNewCustomer);
+		
+		mDialog.setTitle("New Customer");
+		
+		btnOK.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				String strName = txtName.getText().toString().trim();
+				String strAddr = txtAddr.getText().toString().trim();
+				String strPwd = txtPass.getText().toString().trim();
+				String strPhone = txtPhone.getText().toString().trim();
+				
+				if(strName != "" && strPwd != "" && strAddr != "" && strPhone != "")
+				{
+					try
+					{
+						String isReg = new isCustomerRegistered().execute(new String[] {strName,strPhone}).get();
+						
+						if(isReg.contains("nosuchuser"))
+						{
+							String newID = new newCustomer().execute(new String[] {strName, strPwd, strAddr, strPhone}).get();
+							mDependencies.registerNewCustomer(ActivityLanding.this,newID.replace("addedID=", ""),strName,strAddr,strPhone,strPwd);
+						}
+						else if(isReg != "exception")
+						{
+							String[] cDetails = isReg.split("%");
+							mDependencies.registerNewCustomer(ActivityLanding.this,cDetails[0],cDetails[1],cDetails[2],cDetails[3],strPwd);
+						}
+						
+						Toast.makeText(getApplicationContext(), "Registered as a new customer", Toast.LENGTH_SHORT).show();
+					}
+					catch(Exception ex)
+					{
+						Log.d("reg", ex.toString());
+						Toast.makeText(getApplicationContext(), "Cannot register", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+		mDialog.setCancelable(false);
+		
+		mDialog.show();
+	}
 }

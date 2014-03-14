@@ -10,10 +10,12 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -125,24 +127,52 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 			public void onClick(View v) {
 				if(cartProds.length >= 1)
 				{
-					try
-					{
-						billNo = new doCheckout(ActivityCart.this).execute(cartProds).get();
-						if(billNo!="null")
-						{
-							createBill(cartProds);
-							clearTheCart(cartProds.length);
-							finish();
+					AlertDialog.Builder builder = new Builder(mContext);
+					final EditText editText = new EditText(mContext);
+					editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+					builder.setTitle("Enter your password")
+					.setView(editText)
+					.setCancelable(false)
+					.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if(editText.getText().toString().equals(mDependencies.getPassword(mContext)))
+							{
+								try
+								{
+									billNo = new doCheckout(ActivityCart.this).execute(cartProds).get();
+									if(billNo!="null")
+									{
+										createBill(cartProds);
+										clearTheCart(cartProds.length);
+										finish();
+									}
+									else
+									{
+										Toast.makeText(getApplicationContext(), "Cannot checkout at this time, please try again later",Toast.LENGTH_SHORT).show();
+									}
+								}
+								catch (Exception ex)
+								{
+									Log.d("dochekout", ex.toString());
+								}
+							}
+							else
+							{
+								Toast.makeText(getApplicationContext(), "Invalid password",Toast.LENGTH_SHORT).show();
+							}
 						}
-						else
-						{
-							Toast.makeText(getApplicationContext(), "Cannot checkout at this time, please try again later",Toast.LENGTH_SHORT).show();
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
 						}
-					}
-					catch (Exception ex)
-					{
-						Log.d("dochekout", ex.toString());
-					}
+					});
+					
+					builder.create().show();
 				}
 				else
 				{
