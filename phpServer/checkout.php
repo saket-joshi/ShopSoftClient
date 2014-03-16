@@ -50,7 +50,7 @@
 		
 		$updateTotal = mysqli_query($conn,"UPDATE tblBill SET Total = " . $total . " WHERE BillID = " . $billNo);
 		$setUndelivered = mysqli_query($conn,"UPDATE tblBill SET Delivered = -1 WHERE BillID = " . $billNo);
-		echo 1;
+		echo strval($billNo);
 	}
 	
 	catch(Exception $ex)

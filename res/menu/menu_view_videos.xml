@@ -3,7 +3,6 @@
     <item android:id="@+id/viewCart" android:title="View cart"></item>
     <item android:id="@+id/viewVideos" android:title="View Product Videos"></item>
     <item android:id="@+id/buyProduct" android:title="Add to cart"></item>
-    <item android:id="@+id/addWishlist" android:title="Add to wishlist"></item>
     <item android:id="@+id/talkToShopkeeper" android:title="Talk to shopkeeper"></item>
     <item android:id="@+id/setAlert" android:title="Set availability alert"></item>
 </menu>

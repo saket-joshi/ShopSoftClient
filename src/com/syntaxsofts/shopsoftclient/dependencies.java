@@ -12,6 +12,7 @@ public class dependencies extends Application{
 	private File billFile = null;
 	private String selectedShop = "";
 	private String PREFS = "ShopSoftCli_Prefs";
+	private String CHAT = "ShopSoftCli_Chat";
 	private LinkedList<prodDetails>lstCart = new LinkedList<prodDetails>();
 	
 	public void setBillFile(File nFile)
@@ -93,6 +94,21 @@ public class dependencies extends Application{
 	public void emptyCart()
 	{
 		lstCart.clear();
+	}
+	
+	public int getLastChatMsgID(Context mContext)
+	{
+		SharedPreferences mPreferences = mContext.getSharedPreferences(CHAT, Activity.MODE_PRIVATE);
+		return mPreferences.getInt("chatMsgID", 0);
+	}
+	
+	public void newChatMsg(int msgID, Context mContext)
+	{
+		SharedPreferences mPreferences = mContext.getSharedPreferences(CHAT, Activity.MODE_PRIVATE);
+		SharedPreferences.Editor mEditor = mPreferences.edit();
+		
+		mEditor.putInt("chatMsgID", msgID);
+		mEditor.apply();
 	}
 	
 }

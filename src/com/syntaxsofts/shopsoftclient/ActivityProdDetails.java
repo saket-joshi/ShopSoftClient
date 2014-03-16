@@ -75,8 +75,6 @@ public class ActivityProdDetails extends Activity implements TabListener{
 			shopName = mDependencies.getSelectedShop();
 		}
 
-		
-		
 		mWebView = (WebView)findViewById(R.id.prodImgWeb);
 		txtDescription = (TextView)findViewById(R.id.txtDescription);
 		mInStock = (ImageView)findViewById(R.id.imgInStock);
@@ -234,11 +232,9 @@ public class ActivityProdDetails extends Activity implements TabListener{
 				else
 					Toast.makeText(getApplicationContext(), "Item already present", Toast.LENGTH_SHORT).show();				
 				break;
-			case R.id.addWishlist:
-				Toast.makeText(getApplicationContext(), "add wishlist code", Toast.LENGTH_SHORT).show();
-				break;
 			case R.id.talkToShopkeeper:
-				Toast.makeText(getApplicationContext(), "add talk code", Toast.LENGTH_SHORT).show();
+				Intent mIntent = new Intent(ActivityProdDetails.this, ActivityChat.class);
+				startActivity(mIntent);
 				break;
 			case R.id.setAlert:
 				Toast.makeText(getApplicationContext(), "add alert", Toast.LENGTH_SHORT).show();

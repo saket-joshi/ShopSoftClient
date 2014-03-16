@@ -150,7 +150,8 @@ public class ActivityCart extends Activity implements View.OnClickListener{
 									}
 									else
 									{
-										Toast.makeText(getApplicationContext(), "Cannot checkout at this time, please try again later",Toast.LENGTH_SHORT).show();
+										Toast.makeText(getApplicationContext(), "Cannot checkout at this time, please try again later",
+												Toast.LENGTH_SHORT).show();
 									}
 								}
 								catch (Exception ex)
